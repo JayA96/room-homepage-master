@@ -230,9 +230,11 @@ p {
 
 .btn {
   border: 1px solid black;
-  border-radius: 0;
   background-color: black;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.1s; }
   .btn:active {
