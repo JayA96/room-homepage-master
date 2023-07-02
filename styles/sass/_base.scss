@@ -1,0 +1,354 @@
+//COLOR VARIABLES
+$color-dark-gray: hsl(0, 0%, 63%);
+$color-black: hsl(0, 0%, 0%);
+$color-white: hsl(0, 0%, 100%);
+$color-very-dark-gray: hsl(0, 0%, 27%);
+
+//BREAKPOINT VARIABLES
+$bp-lg: 62.5em; //1000px
+$bp-md: 44em; //704px
+
+//UTILS
+.mb-lg {
+    margin-bottom: 5rem;
+}
+
+.mb-md {
+    margin-bottom: 4rem;
+}
+
+.mb-sm {
+    margin-bottom: 3rem;
+}
+
+.mb-xs {
+    margin-bottom: 2rem;
+}
+
+//BASE
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+
+    @media only screen and (max-width: $bp-lg) {
+        font-size: 57.5%;
+    }
+
+    @media only screen and (max-width: $bp-md) {
+        font-size: 52.5%;
+    }
+}
+
+body {
+    box-sizing: border-box;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 1.5rem;
+    position: relative;
+    overflow-x: hidden;
+}
+
+//TYPOGRAPHY
+.heading-1 {
+    font-size: 4rem;
+    font-weight: 600;
+    color: $color-black;
+}
+
+.heading-2 {
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+}
+
+p {
+    color: $color-dark-gray;
+    line-height: 1.5;
+}
+
+//LAYOUT
+.header {
+    position: absolute;
+    display: flex;
+    top: 0;
+    left: 0;
+    z-index: 10;
+
+    @media only screen and (max-width: $bp-md) {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+.container {
+    display: grid;
+    height: 100vh;
+    width: 100vw;
+    grid-template-rows: 1fr 0.15fr 0.5fr;
+    grid-template-columns: repeat(2, 1fr) 0.38fr 1fr;
+    grid-template-areas:
+        "slider slider info info"
+        "slider slider buttons ."
+        "dark about about light";
+
+    @media only screen and (max-width: $bp-md) {
+        height: 200vh;
+        grid-template-rows: 0.85fr 0.15fr auto 0.6fr auto 0.6fr;
+        grid-template-columns: 70vw 30vw;
+        grid-template-areas:
+            "slider slider"
+            "slider slider"
+            "info info"
+            "dark dark"
+            "about about"
+            "light light";
+    }
+}
+
+//COMPONENTS
+.nav {
+
+    &__logo {
+        padding: 5rem;
+    }
+
+    &__bar {
+        display: flex;
+        padding: 5rem 3rem 5rem 0;
+        gap: 3rem;
+        z-index: 100;
+        align-items: center;
+        transition: transform 0.5s;
+
+        @media only screen and (max-width: $bp-md) {
+            background-color: $color-white;
+            transform: translateX(-100%);
+            color: $color-black;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+    }
+
+    &__item {
+        position: relative;
+
+        &:link,
+        &:visited {
+            text-decoration: none;
+            text-transform: lowercase;
+            color: $color-white;
+
+            @media only screen and (max-width: $bp-md) {
+                color: $color-black;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: center;
+            height: 2px;
+            width: 100%;
+            background-color: $color-white;
+            transition: all 0.2s ease;
+        }
+
+        &:hover:after {
+            transform: scaleX(1);
+        }
+
+    }
+
+    &__overlay {
+        opacity: 0;
+        transition: all 0.2s;
+
+        @media only screen and (max-width: $bp-md) {
+            background-color: rgba($color-black, 0.5);
+        }
+    }
+
+    &__checkbox {
+        display: none;
+    }
+
+    &__checkbox:checked ~ &__bar {
+        display: flex;
+        position: fixed;
+        opacity: 1;
+        height: auto;
+        width: 100%;
+        transform: translateX(0%);
+    }
+
+    &__checkbox:checked ~ &__logo {
+        display: none;
+    }
+
+    &__checkbox:checked ~ &__overlay {
+        display: block;
+        opacity: 1;
+        height: 200vh;
+        width: 100vw;
+    }
+
+    &__button {
+        position: absolute;
+        top: 4.8rem;
+        left: 3rem;
+        display: none;
+        z-index: 10;
+        cursor: pointer;
+
+        @media only screen and (max-width: $bp-md) {
+            display: inline-block;
+        }
+    }
+
+    &__close {
+        display: none;
+        margin-left: 3rem;
+        margin-right: auto;
+        cursor: pointer;
+
+        @media only screen and (max-width: $bp-md) {
+            display: inline-block;
+        }
+    }
+}
+
+.slider {
+    grid-area: slider;
+    display: flex;
+    overflow: hidden;
+
+    &>img {
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s;
+    }
+}
+
+.info {
+    grid-area: info;
+    align-self: center;
+    padding: 5rem 10rem 0 10rem;
+
+    @media only screen and (max-width: $bp-lg) {
+        padding: 5rem 5rem 0 5rem;
+    }
+
+    @media only screen and (max-width: $bp-md) {
+        padding: 2rem;
+    }
+
+    &__info {
+        max-width: 60rem;
+        padding: 2rem 10rem;
+    }
+
+    &__shop {
+
+        &:link,
+        &:visited {
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1rem;
+            color: $color-black;
+        }
+
+        &>svg {
+            fill: $color-black;
+        }
+
+        &:active {
+            color: $color-dark-gray;
+
+            &>svg {
+                fill: $color-dark-gray;
+            }
+        } 
+    }
+}
+
+.buttons {
+    grid-area: buttons;
+    display: flex;
+    z-index: 10;
+
+    @media only screen and (max-width: $bp-md) {
+        grid-area: 2 / 2 / 3 / 3;
+    }
+}
+
+.dark {
+    grid-area: dark;
+
+    &>img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.about {
+    grid-area: about;
+    align-self: center;
+    padding: 0 5rem;
+
+    @media only screen and (max-width: $bp-md) {
+        padding: 2rem;
+    }
+}
+
+.light {
+    grid-area: light;
+
+    &>img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.btn {
+    border: 1px solid $color-black;
+    border-radius: 0;
+    background-color: $color-black;
+    flex: 1;
+    cursor: pointer;
+    transition: all 0.1s;
+
+    &:active {
+        background-color: $color-very-dark-gray;
+        border-color: $color-very-dark-gray;
+    }
+}
+
+#info-2,
+#info-3 {
+    display: none;
+}
+
+//ATTRIBUTION
+.attribution {
+    font-size: 11px;
+    text-align: center;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
